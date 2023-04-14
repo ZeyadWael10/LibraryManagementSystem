@@ -11,6 +11,7 @@ const BaseUrl = process.env.BASEURL
 const Port = process.env.PORT || 8080
 app.use(cors())
 app.use(express.json())
+app.get('/',(req,res)=>{res.json({Message:"Welcome"})})
 app.use(`${BaseUrl}/admins`, Routers.AdminRouter)
 app.use(`${BaseUrl}/user`, Routers.UserRouter)
 app.use(`${BaseUrl}/book`, Routers.BookRouter)
