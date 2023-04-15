@@ -11,7 +11,6 @@ const BaseUrl = process.env.BASEURL
 const Port = process.env.PORT || 8080
 app.use(cors())
 app.use(express.json())
-app.use(`${BaseUrl}/admins`, Routers.AdminRouter)
 app.use(`${BaseUrl}/user`, Routers.UserRouter)
 app.use(`${BaseUrl}/book`, Routers.BookRouter)
 app.use("*", (req, res) => res.json({ message: "Invalid Routing" }))

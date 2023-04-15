@@ -10,25 +10,22 @@ export const getAllBooks = async (req, res, next) => {
     next(new Error("Unknown Error"))
 }
 export const addBook = async (req, res, next) => {
-    const { _id } = req.admin
     const { name, author } = req.body
-    const addedBook = new BookModel({ name, author, createdBy: _id })
+    const addedBook = new BookModel({ name, author})
     const Book = await addedBook.save()
     if (Book) return res.status(201).json({ message: "Book Added Successfully", Book })
     next(new Error("Error Adding Book"))
 }
 export const updateBook = async (req, res, next) => {
-    const { _id } = req.admin
     const { name, author } = req.body
     const { BookId } = req.params
-    const book = await BookModel.findOneAndUpdate({ _id: BookId, createdBy: _id }, { name, author }, { new: true })
+    const book = await BookModel.findOneAndUpdate({ _id: BookId}, { name, author }, { new: true })
     if (book) return res.status(200).json({ message: "Book Updated Successfully", UpdatedData: book })
     next(new Error("Error Updating Book"))
 }
 export const deleteBook = async (req, res, next) => {
-    const { _id } = req.admin
     const { BookId } = req.params
-    const deletedBook = await BookModel.findOneAndDelete({ _id: BookId, createdBy: _id })
+    const deletedBook = await BookModel.findOneAndDelete({ _id: BookId})
     if (deletedBook) return res.status(201).json({ message: "Book Deleted Successfully" })
     next(new Error("Error Deleting Book"))
 }
@@ -104,7 +101,6 @@ export const uploadBookPicture = async (req, res, next) => {
     if (!req.files.length) {
         next(new Error("Please Upload Pictures", { cause: 400 }))
     }
-    const { _id } = req.admin
     const { BookId } = req.params
     const book = await BookModel.findById(BookId)
     if (!book) return next(new Error("Book Notfound"))
@@ -116,6 +112,6 @@ export const uploadBookPicture = async (req, res, next) => {
         })
         coverPicsArr.push(secure_url)
     }
-    const updatedBook = await BookModel.findOneAndUpdate({ _id: BookId, createdBy: _id }, { BookPictures: [...book.BookPictures, ...coverPicsArr] }, { new: true })
+    const updatedBook = await BookModel.findOneAndUpdate({ _id: BookId}, { BookPictures: [...book.BookPictures, ...coverPicsArr] }, { new: true })
     updatedBook ? res.status(200).json({ message: "Done", UpdatedData: updatedBook }) : next(new Error("Error Uploading Photos"))
 }
