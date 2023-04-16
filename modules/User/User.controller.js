@@ -43,7 +43,7 @@ export const logIn = async (req, res, next) => {
         if (matchingPasswords) {
             const token = tokenGeneration({ payload: { id: isExist._id, email: isExist.email } })
             await UserModel.findOneAndUpdate({ email }, { isLoggedIn: true })
-            if (token) return res.json({ message: "Login Success", Token: token })
+            if (token) return res.json({ message: "Login Success", Token: token, User: isExist })
             res.json({ message: "Generation of Token Failed" })
         } else {
             next(new Error("Invalid Login Information", { cause: 400 }))
